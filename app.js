@@ -53,8 +53,8 @@ app.post('/add-mentor-form', function(req, res){
 });
 
 function getMentor(res, mysql, context, mentor_id, complete){
-  var sql = "SELECT mentor_id, first_name, last_name FROM Mentors WHERE mentor_id = ?";
-  var inserts = [mentor_id];
+  let sql = "SELECT mentor_id, first_name, last_name FROM Mentors WHERE mentor_id = ?";
+  let inserts = [mentor_id];
   mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           res.write(JSON.stringify(error));
@@ -68,7 +68,7 @@ function getMentor(res, mysql, context, mentor_id, complete){
 // Update a mentor
 app.get('/mentors/:mentor_id', function(req, res){
   callbackCount = 0;
-  var context = {};
+  let context = {};
 
   getMentor(res, mysql, context, req.params.mentor_id, complete);
   function complete(){
@@ -83,8 +83,8 @@ app.get('/mentors/:mentor_id', function(req, res){
 app.put('/mentors/:id', function(req,res){
   console.log(req.body)
   console.log(req.params.id)
-  var sql = "UPDATE Mentors SET first_name=?, last_name=? WHERE mentor_id = ?";
-  var inserts = [req.body.first_name, req.body.last_name, req.params.id];
+  let sql = "UPDATE Mentors SET first_name=?, last_name=? WHERE mentor_id = ?";
+  let inserts = [req.body.first_name, req.body.last_name, req.params.id];
   sql = mysql.pool.query(sql,inserts,function(error, results, fields){
       if(error){
           console.log(error)
@@ -99,8 +99,8 @@ app.put('/mentors/:id', function(req,res){
 
 // Delete a mentor. It will return a 202 upon success. Uses AJAX.
 app.delete('/mentors/:id', function(req,res){
-  var sql = "DELETE FROM Mentors WHERE mentor_id = ?"
-  var inserts = [req.params.id];
+  let sql = "DELETE FROM Mentors WHERE mentor_id = ?"
+  let inserts = [req.params.id];
   sql = mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           console.log(error)
@@ -116,8 +116,8 @@ app.delete('/mentors/:id', function(req,res){
 
 /* Tutors Page */
 app.get('/tutors', (req, res) => {
-  let query1 = "SELECT * FROM Tutors;";
-  mysql.pool.query(query1, function(err, rows, fields) {
+  let query = "SELECT * FROM Tutors;";
+  mysql.pool.query(query, function(err, rows, fields) {
       res.render('tutors', {data: rows})
   });
 });
@@ -126,8 +126,8 @@ app.post('/add-tutor-form', function(req, res){
   // Capture the incoming data and parse it back to a JS object
   let data = req.body;
   // Create the query and run it on the database
-  let query1 = `INSERT INTO Tutors (first_name, last_name) VALUES ('${data['first_name']}', '${data['last_name']}')`;
-  mysql.pool.query(query1, function(error, rows, fields){
+  let query = `INSERT INTO Tutors (first_name, last_name) VALUES ('${data['first_name']}', '${data['last_name']}')`;
+  mysql.pool.query(query, function(error, rows, fields){
       // Check to see if there was an error
       if (error) {
           // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -144,8 +144,8 @@ app.post('/add-tutor-form', function(req, res){
 });
 
 function getTutor(res, mysql, context, tutor_id, complete){
-  var sql = "SELECT tutor_id, first_name, last_name FROM Tutors WHERE tutor_id = ?";
-  var inserts = [tutor_id];
+  let sql = "SELECT tutor_id, first_name, last_name FROM Tutors WHERE tutor_id = ?";
+  let inserts = [tutor_id];
   mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           res.write(JSON.stringify(error));
@@ -159,7 +159,7 @@ function getTutor(res, mysql, context, tutor_id, complete){
 // Update a tutor
 app.get('/tutors/:tutor_id', function(req, res){
   callbackCount = 0;
-  var context = {};
+  let context = {};
 
   getTutor(res, mysql, context, req.params.tutor_id, complete);
   function complete(){
@@ -174,8 +174,8 @@ app.get('/tutors/:tutor_id', function(req, res){
 app.put('/tutors/:id', function(req,res){
   console.log(req.body)
   console.log(req.params.id)
-  var sql = "UPDATE Tutors SET first_name=?, last_name=? WHERE tutor_id = ?";
-  var inserts = [req.body.first_name, req.body.last_name, req.params.id];
+  let sql = "UPDATE Tutors SET first_name=?, last_name=? WHERE tutor_id = ?";
+  let inserts = [req.body.first_name, req.body.last_name, req.params.id];
   sql = mysql.pool.query(sql,inserts,function(error, results, fields){
       if(error){
           console.log(error)
@@ -190,8 +190,8 @@ app.put('/tutors/:id', function(req,res){
 
 // Delete a tutor. It will return a 202 upon success. Uses AJAX.
 app.delete('/tutors/:id', function(req,res){
-  var sql = "DELETE FROM Tutors WHERE tutor_id = ?"
-  var inserts = [req.params.id];
+  let sql = "DELETE FROM Tutors WHERE tutor_id = ?"
+  let inserts = [req.params.id];
   sql = mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           console.log(error)
@@ -253,8 +253,8 @@ app.post('/add-student-form', function(req, res){
 });
 
 function getStudent(res, mysql, context, student_id, complete){
-  var sql = "SELECT student_id, first_name, last_name, email, mentor_id FROM Students WHERE student_id = ?";
-  var inserts = [student_id];
+  let sql = "SELECT student_id, first_name, last_name, email, mentor_id FROM Students WHERE student_id = ?";
+  let inserts = [student_id];
   mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           res.write(JSON.stringify(error));
@@ -279,7 +279,7 @@ function getMentors(res, mysql, context, complete){
 // Update a student
 app.get('/students/:student_id', function(req, res){
   callbackCount = 0;
-  var context = {};
+  let context = {};
 
   getStudent(res, mysql, context, req.params.student_id, complete);
   getMentors(res, mysql, context, complete);
@@ -292,11 +292,13 @@ app.get('/students/:student_id', function(req, res){
 });
 
 app.put('/students/:id', function(req,res){
-  console.log(req.body)
-  console.log(req.params.id)
-
-  var sql = "UPDATE Students SET first_name=?, last_name=?, email=?, mentor_id=? WHERE student_id = ?";
-  var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.mentor_id, req.params.id];
+  // console.log(req.body)
+  // console.log(req.params.id)
+  if(req.body.mentor_id == 'NULL') {
+    req.body.mentor_id = null;
+  }
+  let sql = "UPDATE Students SET first_name=?, last_name=?, email=?, mentor_id=? WHERE student_id = ?";
+  let inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.mentor_id, req.params.id];
 
   sql = mysql.pool.query(sql,inserts,function(error, results, fields){
       if(error){
@@ -312,8 +314,8 @@ app.put('/students/:id', function(req,res){
 
 // Delete a student. It will return a 202 upon success. Uses AJAX.
 app.delete('/students/:id', function(req,res){
-  var sql = "DELETE FROM Students WHERE student_id = ?"
-  var inserts = [req.params.id];
+  let sql = "DELETE FROM Students WHERE student_id = ?"
+  let inserts = [req.params.id];
   sql = mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           console.log(error)
@@ -333,7 +335,20 @@ app.get('/courses', (req, res) => {
   mysql.pool.query(query1, function(err, rows, fields) {
       let courses = rows;
       mysql.pool.query(query2, function(err, rows, fields){
-        let tutors = rows;
+        // Push tutor IDs that are already assigned to a course into an array
+        let takenTutors = []
+        for(course of courses){
+          takenTutors.push(course.tutor_id)
+        }
+        // Initialize array of untaken tutors
+        let tutors = []
+
+        //Push tutors that aren't assigned to a course
+        for(tutor of rows){
+          if(!takenTutors.includes(tutor.tutor_id)){
+            tutors.push(tutor)
+          }
+        }
         return res.render('courses', {data: courses, tutors: tutors});
       });
   });
@@ -343,8 +358,8 @@ app.post('/add-course-form', function(req, res){
   // Capture the incoming data and parse it back to a JS object
   let data = req.body;
   // Create the query and run it on the database
-  query1 = `INSERT INTO Courses (course_name, tutor_id) VALUES ('${data['course_name']}', '${data['tutor_id']}')`;
-  mysql.pool.query(query1, function(error, rows, fields){
+  query = `INSERT INTO Courses (course_name, tutor_id) VALUES ('${data['course_name']}', '${data['tutor_id']}')`;
+  mysql.pool.query(query, function(error, rows, fields){
       // Check to see if there was an error
       if (error) {
           // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -360,66 +375,10 @@ app.post('/add-course-form', function(req, res){
   });
 });
 
-function getCourse(res, mysql, context, course_id, complete){
-  var sql = "SELECT course_id, course_name, tutor_id FROM Courses WHERE course_id = ?";
-  var inserts = [course_id];
-  mysql.pool.query(sql, inserts, function(error, results, fields){
-      if(error){
-          res.write(JSON.stringify(error));
-          res.end();
-      }
-      context.course = results[0];
-      complete();
-  });
-}
-
-function getTutors(res, mysql, context, complete){
-  mysql.pool.query("SELECT tutor_id, first_name, last_name FROM Tutors", function(error, results, fields){
-      if(error){
-          res.write(JSON.stringify(error));
-          res.end();
-      }
-      context.tutors  = results;
-      complete();
-  });
-}
-
-// Update a course
-app.get('/courses/:course_id', function(req, res){
-  callbackCount = 0;
-  var context = {};
-
-  getCourse(res, mysql, context, req.params.course_id, complete);
-  getTutors(res, mysql, context, complete);
-  function complete(){
-      callbackCount++;
-      if(callbackCount >= 2){
-          res.render('update_course', context);
-      }
-  }
-});
-
-app.put('/courses/:id', function(req,res){
-  console.log(req.body)
-  console.log(req.params.id)
-  var sql = "UPDATE Courses SET course_name=?, tutor_id=? WHERE course_id = ?";
-  var inserts = [req.body.course_name, req.body.tutor_id, req.params.id];
-  sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-      if(error){
-          console.log(error)
-          res.write(JSON.stringify(error));
-          res.end();
-      }else{
-          res.status(200);
-          res.end();
-      }
-  });
-});
-
 // Delete a course. It will return a 202 upon success. Uses AJAX.
 app.delete('/courses/:id', function(req,res){
-  var sql = "DELETE FROM Courses WHERE course_id = ?"
-  var inserts = [req.params.id];
+  let sql = "DELETE FROM Courses WHERE course_id = ?"
+  let inserts = [req.params.id];
   sql = mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           console.log(error)
@@ -463,8 +422,8 @@ app.post('/add-student_course-form', function(req, res){
   // Capture the incoming data and parse it back to a JS object
   let data = req.body;
   // Create the query and run it on the database
-  query1 = `INSERT INTO Students_Courses (course_id, student_id) VALUES ('${data['course_id']}', '${data['student_id']}')`;
-  mysql.pool.query(query1, function(error, rows, fields){
+  query = `INSERT INTO Students_Courses (course_id, student_id) VALUES ('${data['course_id']}', '${data['student_id']}')`;
+  mysql.pool.query(query, function(error, rows, fields){
       // Check to see if there was an error
       if (error) {
           // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -483,8 +442,8 @@ app.post('/add-student_course-form', function(req, res){
 
 // Delete an invoice. It will return a 202 upon success. Uses AJAX.
 app.delete('/course_id/:cid/student_id/:sid', function(req,res){
-  var sql = "DELETE FROM Students_Courses WHERE course_id = ? AND student_id = ?";
-  var inserts = [req.params.cid, req.params.sid];
+  let sql = "DELETE FROM Students_Courses WHERE course_id = ? AND student_id = ?";
+  let inserts = [req.params.cid, req.params.sid];
   sql = mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           console.log(error)
@@ -514,8 +473,8 @@ app.post('/add-invoice-form', function(req, res){
   // Capture the incoming data and parse it back to a JS object
   let data = req.body;
   // Create the query and run it on the database
-  query1 = `INSERT INTO Invoices (student_id, payment_status) VALUES ('${data['student_id']}','${data['payment_status']}')`;
-  mysql.pool.query(query1, function(error, rows, fields){
+  query = `INSERT INTO Invoices (student_id, payment_status) VALUES ('${data['student_id']}','${data['payment_status']}')`;
+  mysql.pool.query(query, function(error, rows, fields){
       // Check to see if there was an error
       if (error) {
           // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -532,8 +491,8 @@ app.post('/add-invoice-form', function(req, res){
 });
 
 function getInvoice(res, mysql, context, invoice_id, complete){
-  var sql = "SELECT invoice_id, student_id, payment_status FROM Invoices WHERE invoice_id = ?";
-  var inserts = [invoice_id];
+  let sql = "SELECT invoice_id, student_id, payment_status FROM Invoices WHERE invoice_id = ?";
+  let inserts = [invoice_id];
   mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           res.write(JSON.stringify(error));
@@ -547,7 +506,7 @@ function getInvoice(res, mysql, context, invoice_id, complete){
 // Update an invoice
 app.get('/invoices/:invoice_id', function(req, res){
   callbackCount = 0;
-  var context = {};
+  let context = {};
 
   getInvoice(res, mysql, context, req.params.invoice_id, complete);
   function complete(){
@@ -559,8 +518,8 @@ app.get('/invoices/:invoice_id', function(req, res){
 });
 
 app.put('/invoices/:id', function(req,res){
-  var sql = "UPDATE Invoices SET payment_status=? WHERE invoice_id = ?";
-  var inserts = [req.body.payment_status, req.params.id];
+  let sql = "UPDATE Invoices SET payment_status=? WHERE invoice_id = ?";
+  let inserts = [req.body.payment_status, req.params.id];
   sql = mysql.pool.query(sql,inserts,function(error, results, fields){
       if(error){
           console.log(error)
@@ -575,8 +534,8 @@ app.put('/invoices/:id', function(req,res){
 
 // Delete an invoice. It will return a 202 upon success. Uses AJAX.
 app.delete('/invoices/:id', function(req,res){
-  var sql = "DELETE FROM Invoices WHERE invoice_id = ?"
-  var inserts = [req.params.id];
+  let sql = "DELETE FROM Invoices WHERE invoice_id = ?"
+  let inserts = [req.params.id];
   sql = mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error){
           console.log(error)
