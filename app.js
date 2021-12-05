@@ -230,8 +230,8 @@ app.post('/add-student-form', function(req, res){
   let data = req.body;
   
   // Create the query and run it on the database
-  if (req.query.mentor_id === undefined) {
-    query1 = `INSERT INTO Students (first_name, last_name, email) VALUES ('${data['first_name']}', '${data['last_name']}', '${data['email']}')`;
+  if (data.mentor_id === "NULL") {
+    query1 = `INSERT INTO Students (first_name, last_name, email,mentor_id) VALUES ('${data['first_name']}', '${data['last_name']}', '${data['email']}', NULL)`;
   } else {
     query1 = `INSERT INTO Students (first_name, last_name, email, mentor_id) VALUES ('${data['first_name']}', '${data['last_name']}', '${data['email']}', '${data['mentor_id']}')`;
   }
@@ -294,6 +294,7 @@ app.get('/students/:student_id', function(req, res){
 app.put('/students/:id', function(req,res){
   console.log(req.body)
   console.log(req.params.id)
+
   var sql = "UPDATE Students SET first_name=?, last_name=?, email=?, mentor_id=? WHERE student_id = ?";
   var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.mentor_id, req.params.id];
 
@@ -502,9 +503,6 @@ app.get('/invoices', (req, res) => {
   let query2 = "SELECT * FROM Students;";
   mysql.pool.query(query1, function(err, rows, fields) {
       let invoices = rows;
-      for(let invoice of invoices){
-        invoice.payment_status == 1? invoice.payment_status = "Yes" : invoice.payment_status =  "No"
-      }
       mysql.pool.query(query2, function(err, rows, fields){
         let students = rows;
         return res.render('invoices', {data: invoices, students: students});
@@ -515,8 +513,6 @@ app.get('/invoices', (req, res) => {
 app.post('/add-invoice-form', function(req, res){
   // Capture the incoming data and parse it back to a JS object
   let data = req.body;
-  // Fix request body so payment_status is either 1 or 0
-  data.payment_status == "yes"? data.payment_status = 1 : data.payment_status = 0
   // Create the query and run it on the database
   query1 = `INSERT INTO Invoices (student_id, payment_status) VALUES ('${data['student_id']}','${data['payment_status']}')`;
   mysql.pool.query(query1, function(error, rows, fields){
@@ -548,27 +544,15 @@ function getInvoice(res, mysql, context, invoice_id, complete){
   });
 }
 
-function getStudents(res, mysql, context, complete){
-  mysql.pool.query("SELECT student_id, first_name, last_name, email, mentor_id FROM Students", function(error, results, fields){
-      if(error){
-          res.write(JSON.stringify(error));
-          res.end();
-      }
-      context.students  = results;
-      complete();
-  });
-}
-
 // Update an invoice
 app.get('/invoices/:invoice_id', function(req, res){
   callbackCount = 0;
   var context = {};
 
   getInvoice(res, mysql, context, req.params.invoice_id, complete);
-  getStudents(res, mysql, context, complete);
   function complete(){
       callbackCount++;
-      if(callbackCount >= 2){
+      if(callbackCount >= 1){
           res.render('update_invoice', context);
       }
   }
@@ -576,9 +560,7 @@ app.get('/invoices/:invoice_id', function(req, res){
 
 app.put('/invoices/:id', function(req,res){
   var sql = "UPDATE Invoices SET payment_status=? WHERE invoice_id = ?";
-  var payment_status;
-  req.body.payment_status == "yes"? payment_status = 1: payment_status = 0
-  var inserts = [payment_status, req.params.id];
+  var inserts = [req.body.payment_status, req.params.id];
   sql = mysql.pool.query(sql,inserts,function(error, results, fields){
       if(error){
           console.log(error)
