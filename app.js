@@ -294,9 +294,9 @@ app.get('/students/:student_id', function(req, res){
 app.put('/students/:id', function(req,res){
   console.log(req.body)
   console.log(req.params.id)
-
-  var sql = "UPDATE Students SET first_name=?, last_name=?, email=?, mentor_id=? WHERE student_id = ?";
-  var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.mentor_id, req.params.id];
+  if(req.body.mentor_id == 'NULL') req.body.mentor_id = null
+  var sql = "UPDATE Students SET mentor_id=? WHERE student_id = ?";
+  var inserts = [req.body.mentor_id, req.params.id];
 
   sql = mysql.pool.query(sql,inserts,function(error, results, fields){
       if(error){
@@ -333,7 +333,20 @@ app.get('/courses', (req, res) => {
   mysql.pool.query(query1, function(err, rows, fields) {
       let courses = rows;
       mysql.pool.query(query2, function(err, rows, fields){
-        let tutors = rows;
+        // Push tutor IDs that are already assigned to a course into an array
+        let takenTutors = []
+        for(course of courses){
+          takenTutors.push(course.tutor_id)
+        }
+        // Initialize array of untaken tutors
+        let tutors = []
+
+        //Push tutors that aren't assigned to a course
+        for(tutor of rows){
+          if(!takenTutors.includes(tutor.tutor_id)){
+            tutors.push(tutor)
+          }
+        }
         return res.render('courses', {data: courses, tutors: tutors});
       });
   });
