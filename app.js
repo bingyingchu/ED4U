@@ -292,8 +292,8 @@ app.get('/students/:student_id', function(req, res){
 });
 
 app.put('/students/:id', function(req,res){
-  // console.log(req.body)
-  // console.log(req.params.id)
+  console.log(req.body)
+  console.log(req.params.id)
   if(req.body.mentor_id == 'NULL') {
     req.body.mentor_id = null;
   }

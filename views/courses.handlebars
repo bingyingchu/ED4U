@@ -36,6 +36,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Add New Course</h4>
                     <form id="add-course-form" method="POST" action="/add-course-form">
+
                         <label for="course_name" class="form-label">Type the Course Name:</label>
                         <div class="mb-3">
                             <input type="text" class="form-control" name="course_name" id="coursename" required>
@@ -43,6 +44,7 @@
                         <label for="tutor" class="form-label">Select a Tutor (Note that one tutor can only teach one course)</label>
                         <div class="mb-3">
                             <select name="tutor_id" id="tutor_id" required>
+
                                 <option value="">Select A Tutor</option>
                                 {{#each tutors}}
                                 <option value="{{this.tutor_id}}">{{this.tutor_id}}-{{this.first_name}} {{this.last_name}}</option>
@@ -69,4 +71,6 @@
             }
         })
     }
+
 </script>
+
