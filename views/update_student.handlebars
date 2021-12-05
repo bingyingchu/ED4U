@@ -5,6 +5,7 @@
     last_name: <input type="text" name="last_name" value="{{student.last_name}}"><br>
     email: <input type="email" name="email" value="{{student.email}}"><br>
     mentor_id: <select name="mentor_id" id="mentor_id">
+        <option value="{{student.mentor_id}}">{{student.mentor_id}}</option>
         {{#each mentors}}
             <option value="{{mentor_id}}">{{mentor_id}}-{{first_name}} {{last_name}}</option>
         {{/each}}
