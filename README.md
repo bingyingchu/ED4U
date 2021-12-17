@@ -1,2 +1,4 @@
 340 portfolio project - Fall 2021
-[Walkthrough](https://recordit.co/LVVwJvXIp5)
+
+## Video Walkthrough
+<img src='./ed4u.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
